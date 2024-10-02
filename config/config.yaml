@@ -1,0 +1,18 @@
+http-server:
+  host: "localhost"      # Хост для HTTP-сервера
+  port: 8080             # Порт для HTTP-сервера
+
+kafka:
+  brokers:               # Список брокеров Kafka
+    - "localhost:9093"
+  topic: "orders"        # Топик, из которого будут получаться сообщения
+  consumer_group: "consumer-group" # Группа потребителей
+
+database:
+  host: "localhost"
+  port: 5433
+  user: "kourai"
+  password: "kourai123"
+  dbname: "orders"
+
+env : local
