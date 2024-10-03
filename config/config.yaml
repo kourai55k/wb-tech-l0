@@ -6,7 +6,7 @@ kafka:
   brokers:               # Список брокеров Kafka
     - "localhost:9093"
   topic: "orders"        # Топик, из которого будут получаться сообщения
-  consumer_group: "consumer-group" # Группа потребителей
+  group_id: "consumer-group" # Группа потребителей
 
 database:
   host: "localhost"
@@ -14,5 +14,3 @@ database:
   user: "kourai"
   password: "kourai123"
   dbname: "orders"
-
-env : local

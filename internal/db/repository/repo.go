@@ -4,6 +4,7 @@ import (
 	"WBTechL0/internal/models"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log/slog"
@@ -75,7 +76,7 @@ func (r *Repo) SaveOrder(ctx context.Context, order models.Order) error {
 		return err
 	}
 
-	r.sl.Info("Order successfully saved")
+	r.sl.Info("Order successfully saved", "order", order)
 	return nil
 }
 
@@ -144,7 +145,7 @@ func (r *Repo) GetOrderByUID(ctx context.Context, orderUID string) (*models.Orde
 
 	order.Items = items
 
-	r.sl.Debug("Order retrieved successfully", "order_uid", orderUID)
+	r.sl.Debug("Order retrieved successfully", "order_uid", orderUID, "order", order)
 	return &order, nil
 }
 
@@ -161,8 +162,7 @@ func (r *Repo) GetAllOrders(ctx context.Context) ([]models.Order, error) {
 
 	rows, err := r.pool.Query(ctx, orderQuery)
 	if err != nil {
-		r.sl.Error("Failed to retrieve orders", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to retrieve orders from database: %w", err)
 	}
 	defer rows.Close()
 

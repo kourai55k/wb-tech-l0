@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details</title>
+</head>
+<body>
+<h1>Order Details</h1>
+
+<h2>Order UID: {{ .OrderUID }}</h2>
+<p>Track Number: {{ .TrackNumber }}</p>
+<p>Entry: {{ .Entry }}</p>
+
+<h3>Delivery Information</h3>
+<p>Name: {{ .Delivery.Name }}</p>
+<p>Phone: {{ .Delivery.Phone }}</p>
+<p>Zip: {{ .Delivery.Zip }}</p>
+<p>City: {{ .Delivery.City }}</p>
+<p>Address: {{ .Delivery.Address }}</p>
+<p>Region: {{ .Delivery.Region }}</p>
+<p>Email: {{ .Delivery.Email }}</p>
+
+<h3>Payment Information</h3>
+<p>Transaction: {{ .Payment.Transaction }}</p>
+<p>Request ID: {{ .Payment.RequestID }}</p>
+<p>Currency: {{ .Payment.Currency }}</p>
+<p>Provider: {{ .Payment.Provider }}</p>
+<p>Amount: {{ .Payment.Amount }}</p>
+<p>Payment Date: {{ .Payment.PaymentDT }}</p>
+<p>Bank: {{ .Payment.Bank }}</p>
+<p>Delivery Cost: {{ .Payment.DeliveryCost }}</p>
+<p>Goods Total: {{ .Payment.GoodsTotal }}</p>
+<p>Custom Fee: {{ .Payment.CustomFee }}</p>
+
+<h3>Items</h3>
+<ul>
+  {{ range .Items }}
+  <li>
+    <strong>Name: {{ .Name }}</strong> - ChrtID: {{ .ChrtID }} - Price: {{ .Price }} - Sale: {{ .Sale }} -
+    Track Number: {{ .TrackNumber }} - RID: {{ .Rid }} - NM ID: {{ .NmID }} -
+    Brand: {{ .Brand }} - Status: {{ .Status }} - Size: {{ .Size }} - TotalPrice: {{ .TotalPrice }}
+  </li>
+  {{ end }}
+</ul>
+
+<p>Locale: {{ .Locale }}</p>
+<p>Internal Signature: {{ .InternalSignature }}</p>
+<p>Customer ID: {{ .CustomerID }}</p>
+<p>Delivery Service: {{ .DeliveryService }}</p>
+<p>Shardkey: {{ .Shardkey }}</p>
+<p>SM ID: {{ .SmID }}</p>
+<p>Date Created: {{ .DateCreated }}</p>
+<p>Oof Shard: {{ .OofShard }}</p>
+</body>
+</html>

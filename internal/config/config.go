@@ -20,9 +20,9 @@ type HttpServer struct {
 }
 
 type Kafka struct {
-	Brokers       []string `yaml:"brokers" env-default:"localhost:9093"`
-	Topic         string   `yaml:"topic" env-default:"orders"`
-	ConsumerGroup string   `yaml:"consumerGroup" env-default:"consumer-group"`
+	Brokers []string `yaml:"brokers" env-default:"{localhost:9093}"`
+	Topic   string   `yaml:"topic" env-default:"orders"`
+	GroupId string   `yaml:"groupId" env-default:"consumer-group"`
 }
 
 type Database struct {
@@ -33,14 +33,14 @@ type Database struct {
 	DBname   string `yaml:"dbname" env-default:"orders"`
 }
 
-func MustLoad() *Config {
+func MustLoad() (*Config, error) {
 	// Загружаем переменные окружения из .env файла
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		return nil, err
 	}
 
-	// Получаем путь до конфиг-файла из env-переменной CONFIG_PATH
+	//Получаем путь до конфиг-файла из env-переменной CONFIG_PATH
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH environment variable is not set")
@@ -48,7 +48,7 @@ func MustLoad() *Config {
 
 	// Проверяем существование конфиг-файла
 	if _, err = os.Stat(configPath); err != nil {
-		log.Fatalf("error opening config file: %s", err)
+		return nil, err
 	}
 
 	var cfg Config
@@ -56,8 +56,8 @@ func MustLoad() *Config {
 	// Читаем конфиг-файл и заполняем нашу структуру
 	err = cleanenv.ReadConfig(configPath, &cfg)
 	if err != nil {
-		log.Fatalf("error reading config file: %s", err)
+		return nil, err
 	}
 	//log.Printf("Config loaded successfully: %+v", cfg)
-	return &cfg
+	return &cfg, nil
 }

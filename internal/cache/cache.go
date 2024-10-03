@@ -4,7 +4,6 @@ import (
 	"WBTechL0/internal/db/repository"
 	"WBTechL0/internal/models"
 	"context"
-	"fmt"
 	"sync"
 )
 
@@ -43,16 +42,17 @@ func (c *Cache) Get(orderUID string) (*models.Order, bool) {
 }
 
 // RestoreCacheFromDB загружает все заказы из базы данных в кэш
-func (c *Cache) RestoreCacheFromDB(repo *repository.Repo) error {
-	orders, err := repo.GetAllOrders(context.Background()) // Предполагаем, что эта функция возвращает все заказы
+func (c *Cache) RestoreCacheFromDB(repo *repository.Repo) (int, error) {
+	orders, err := repo.GetAllOrders(context.Background())
 	if err != nil {
-		return fmt.Errorf("failed to retrieve orders from database: %v", err)
+		return 0, err
 	}
 
 	// Загружаем заказы в кэш
 	for _, order := range orders {
-		c.Set(order) // Сохраняем каждый заказ в кэш
+		c.Set(order)
 	}
-	fmt.Printf("Cache restored with %d orders from the database\n", len(orders))
-	return nil
+
+	// Возвращаем количество записей, восстановленных из бд и ошибку
+	return len(orders), nil
 }

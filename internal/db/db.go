@@ -20,7 +20,13 @@ func ConnectToDB(dbCfg config.Database) (*pgxpool.Pool, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer pool.Close()
+
+	// Check if the database is accessible by performing a simple query
+	err = pool.QueryRow(context.Background(), "SELECT 1").Scan(new(int))
+	if err != nil {
+		pool.Close()
+		return nil, fmt.Errorf("failed to access the database: %v", err)
+	}
 
 	return pool, nil
 }
@@ -88,7 +94,7 @@ func CreateTables(pool *pgxpool.Pool) error {
 	);`
 
 	// Выполняем команды для создания таблиц
-	commands := []string{createOrdersTable, createDeliveriesTable, createPaymentsTable, createItemsTable}
+	commands := []string{createDeliveriesTable, createPaymentsTable, createOrdersTable, createItemsTable}
 	for _, cmd := range commands {
 		if _, err := pool.Exec(context.Background(), cmd); err != nil {
 			return err
