@@ -92,7 +92,6 @@ func main() {
 			sl.Error("Failed to start Kafka consumer", err)
 		}
 	}()
-	sl.Info("App is working")
 	// Ожидаем сигнал завершения
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
