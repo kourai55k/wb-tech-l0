@@ -13,7 +13,7 @@ type Cache struct {
 	orders map[string]models.Order
 }
 
-// New — создание нового кэша с заданным TTL
+// New — создание нового кэша
 func New() *Cache {
 	return &Cache{
 		orders: make(map[string]models.Order),
